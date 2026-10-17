@@ -19,6 +19,8 @@ public class TotalNoNegativoSteps extends FastCucumberSteps {
 
     private Grupo grupo;
 
+    private boolean reembolsoRechazado;
+
     @Dado("que el grupo tiene un total de {int}")
     public void queElGrupoTieneUnTotalDe(int total) {
 
@@ -35,8 +37,14 @@ public class TotalNoNegativoSteps extends FastCucumberSteps {
         try {
             montos.acumularAlTotal(grupo, reembolso);
         } catch (TotalNegativoException e) {
-            // el reembolso fue rechazado: el total del grupo no cambia
+            reembolsoRechazado = true;
         }
+    }
+
+    @Entonces("el reembolso es rechazado")
+    public void elReembolsoEsRechazado() {
+
+        assertThat(reembolsoRechazado).isTrue();
     }
 
     @Entonces("el total del grupo sigue siendo {int}")

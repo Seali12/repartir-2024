@@ -7,7 +7,8 @@ Característica: Total de un grupo para repartir gastos
     Escenario: Un reembolso mayor al total del grupo es rechazado
       Dado que el grupo tiene un total de 50
       Cuando se registra un reembolso de 80
-      Entonces el total del grupo sigue siendo 50
+      Entonces el reembolso es rechazado
+      Y el total del grupo sigue siendo 50
 
     Escenario: Un reembolso igual al total del grupo deja el total en cero
       Dado que el grupo tiene un total de 50
