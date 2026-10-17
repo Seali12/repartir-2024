@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import javax.annotation.PostConstruct;
+import java.util.concurrent.TimeUnit;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -33,6 +34,9 @@ public class WebDriverSupport {
         options.addArguments("start-maximized");
         options.addArguments(environmentalOptions);
 
-        return new ChromeDriver(options);
+        var driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        return driver;
     }
 }
