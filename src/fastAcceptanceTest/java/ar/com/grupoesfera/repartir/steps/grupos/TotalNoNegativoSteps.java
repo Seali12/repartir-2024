@@ -1,5 +1,6 @@
 package ar.com.grupoesfera.repartir.steps.grupos;
 
+import ar.com.grupoesfera.repartir.exceptions.TotalNegativoException;
 import ar.com.grupoesfera.repartir.model.Gasto;
 import ar.com.grupoesfera.repartir.model.Grupo;
 import ar.com.grupoesfera.repartir.services.MontosService;
@@ -31,7 +32,11 @@ public class TotalNoNegativoSteps extends FastCucumberSteps {
         Gasto reembolso = new Gasto();
         reembolso.setMonto(BigDecimal.valueOf(-monto));
 
-        montos.acumularAlTotal(grupo, reembolso);
+        try {
+            montos.acumularAlTotal(grupo, reembolso);
+        } catch (TotalNegativoException e) {
+            // el reembolso fue rechazado: el total del grupo no cambia
+        }
     }
 
     @Entonces("el total del grupo sigue siendo {int}")
