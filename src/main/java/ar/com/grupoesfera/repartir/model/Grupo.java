@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -69,6 +70,11 @@ public class Grupo {
 
     public boolean estaFormado() {
 
-        return (miembros != null) && (miembros.size() > 1);
+        return (miembros != null) && (miembros.size() > 1) && sinMiembrosRepetidos();
+    }
+
+    private boolean sinMiembrosRepetidos() {
+
+        return new HashSet<>(miembros).size() == miembros.size();
     }
 }
