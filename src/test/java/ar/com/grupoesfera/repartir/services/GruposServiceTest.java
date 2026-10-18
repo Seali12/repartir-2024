@@ -2,6 +2,7 @@ package ar.com.grupoesfera.repartir.services;
 
 import ar.com.grupoesfera.repartir.exceptions.GrupoInvalidoException;
 import ar.com.grupoesfera.repartir.exceptions.GrupoNoEncontradoException;
+import ar.com.grupoesfera.repartir.exceptions.TotalNegativoException;
 import ar.com.grupoesfera.repartir.model.Gasto;
 import ar.com.grupoesfera.repartir.model.Grupo;
 import ar.com.grupoesfera.repartir.repositories.GruposRepository;
@@ -169,6 +170,31 @@ class GruposServiceTest {
 
         Gasto gasto = new Gasto();
         gasto.setMonto(BigDecimal.valueOf(9700,2));
+        return gasto;
+    }
+
+    @Test
+    void agregarGastoLanzaExcepcionCuandoElTotalDelGrupoQuedaNegativo() {
+
+        final Long ID_VIAJE = 89L;
+        final Grupo VIAJE = crearGrupoViajeConTotal112(ID_VIAJE);
+        final Gasto REEMBOLSO_DE_150 = crearReembolsoDe150();
+        final BigDecimal $_112_00 = BigDecimal.valueOf(11200, 2);
+
+        when(repositoryMock.findById(ID_VIAJE)).thenReturn(Optional.of(VIAJE));
+
+        assertThrows(TotalNegativoException.class, () -> {
+            grupos.agregarGasto(ID_VIAJE, REEMBOLSO_DE_150);
+        });
+
+        assertThat(VIAJE.getTotal()).isEqualTo($_112_00);
+        verify(repositoryMock, never()).save(any());
+    }
+
+    private Gasto crearReembolsoDe150() {
+
+        Gasto gasto = new Gasto();
+        gasto.setMonto(BigDecimal.valueOf(-15000,2));
         return gasto;
     }
 }
