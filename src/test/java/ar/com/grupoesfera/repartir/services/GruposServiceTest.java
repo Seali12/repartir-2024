@@ -62,6 +62,20 @@ class GruposServiceTest {
     }
 
     @Test
+    void crearGrupoLanzaExcepcionSiUnaPersonaEstaRepetidaEnElGrupo() {
+
+        Grupo grupoInvalidoConMiembroRepetido = new Grupo();
+        grupoInvalidoConMiembroRepetido.setNombre("Cena");
+        grupoInvalidoConMiembroRepetido.setMiembros(asList("pablo", "maria", "pablo"));
+
+        assertThrows(GrupoInvalidoException.class, () -> {
+            grupos.crear(grupoInvalidoConMiembroRepetido);
+        });
+
+        verifyNoInteractions(repositoryMock);
+    }
+
+    @Test
     void recuperarGrupoPorId() {
 
         final Long ID_BUSCADO = 45L;
