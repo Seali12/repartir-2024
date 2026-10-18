@@ -62,4 +62,31 @@ class GrupoTest {
 
         assertThat(grupo.estaFormado()).isFalse();
     }
+
+    @Test
+    void noEstaFormadoCuandoLaMismaPersonaFiguraDosVeces() {
+
+        Grupo grupo = new Grupo();
+        grupo.setMiembros(Arrays.asList("pablo", "pablo"));
+
+        assertThat(grupo.estaFormado()).isFalse();
+    }
+
+    @Test
+    void noEstaFormadoCuandoUnaPersonaEstaRepetidaEntreVariosMiembros() {
+
+        Grupo grupo = new Grupo();
+        grupo.setMiembros(Arrays.asList("pablo", "maria", "pablo"));
+
+        assertThat(grupo.estaFormado()).isFalse();
+    }
+
+    @Test
+    void estaFormadoCuandoTodosLosMiembrosSonDistintos() {
+
+        Grupo grupo = new Grupo();
+        grupo.setMiembros(Arrays.asList("pablo", "maria", "roberto"));
+
+        assertThat(grupo.estaFormado()).isTrue();
+    }
 }
